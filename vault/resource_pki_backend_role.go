@@ -206,7 +206,7 @@ func pkiBackendRoleWrite(d *schema.ResourceData, meta interface{}) error {
 	data["max_ttl"] = d.Get("max_ttl").(string)
 	data["allow_localhost"] = d.Get("allow_localhost").(bool)
 
-	iDomains := d.Get("allowed_domains").([]interface{})
+	iDomains := d.Get("allowed_domains").(*schema.Set).List()
 	domains := make([]string, 0, len(iDomains))
 	for _, iDomain := range iDomains {
 		domains = append(domains, iDomain.(string))
@@ -227,7 +227,7 @@ func pkiBackendRoleWrite(d *schema.ResourceData, meta interface{}) error {
 	data["key_type"] = d.Get("key_type").(string)
 	data["key_bits"] = d.Get("key_bits").(int)
 
-	iUsages := d.Get("key_usage").([]interface{})
+	iUsages := d.Get("key_usage").(*schema.Set).List()
 	usages := make([]string, 0, len(iUsages))
 	for _, iUsage := range iUsages {
 		usages = append(usages, iUsage.(string))
