@@ -282,10 +282,15 @@ func pkiBackendRoleRead(d *schema.ResourceData, meta interface{}) error {
 		return nil
 	}
 
-	iDomains := resp.Data["allowed_domains"].([]interface{})
-	domains := make([]string, 0, len(iDomains))
-	for _, iDomain := range iDomains {
-		domains = append(domains, iDomain.(string))
+	var domains []string
+	iDomains, ok := resp.Data["allowed_domains"].([]interface{})
+	if ok {
+		domains = make([]string, 0, len(iDomains))
+		for _, iDomain := range iDomains {
+			domains = append(domains, iDomain.(string))
+		}
+	} else {
+		domains = make([]string, 0, 0)
 	}
 
 	iUsages := resp.Data["key_usage"].([]interface{})
